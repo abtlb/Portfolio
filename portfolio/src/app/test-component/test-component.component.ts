@@ -1,8 +1,8 @@
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild, OnDestroy } from '@angular/core';
 import * as d3 from 'd3';
 import graphDataJson from '../../assets/data.json';
-
-//{ id: string; group: string; radius?: undefined; citing_patents_count?: undefined; }
+import { isPlatformBrowser } from '@angular/common';
+import { Inject, PLATFORM_ID } from '@angular/core';
 
 interface NodeData extends d3.SimulationNodeDatum {
   id: string;
@@ -23,40 +23,70 @@ interface LinkData extends d3.SimulationLinkDatum<NodeData> {
   templateUrl: './test-component.component.html',
   styleUrl: './test-component.component.scss'
 })
-export class TestComponentComponent implements AfterViewInit {
+export class TestComponentComponent implements AfterViewInit, OnDestroy {
   @ViewChild('chart', { static: true }) chartElement!: ElementRef;
   graphData = graphDataJson;
   private simulation?: d3.Simulation<NodeData, LinkData>;
+  private resizeHandler?: () => void;
+
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+
 
   ngAfterViewInit(): void {
-  // Specify the dimensions of the chart.
-  const width = 928;
-  const height = 680;
+    
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+    this.createChart();
+  }
 
-  // Specify the color scale.
-  const color = d3.scaleOrdinal(d3.schemeCategory10);
+  private createChart(): void {
+    
+    // Clear any existing chart
+    if (this.chartElement?.nativeElement) {
+      this.chartElement.nativeElement.innerHTML = '';
+    }
+    
+    // Specify the dimensions of the chart.
+    let width = window.innerWidth;
+    let height = window.innerHeight;
 
-  // The force simulation mutates links and nodes, so create a copy
-  // so that re-evaluating this cell produces the same result.
-  const links: LinkData[] = this.graphData.links.map(d => ({...d}));
-  const nodes: NodeData[] = this.graphData.nodes.map(d => ({...d}));
-
-  // Create a simulation with several forces.
-  const simulation = d3.forceSimulation(nodes)
-      .force("link", d3.forceLink(links).id(d => (d as NodeData).id))
-      .force("charge", d3.forceManyBody())
-      .force("x", d3.forceX())
-      .force("y", d3.forceY());
-
-  this.simulation = simulation;
-
-  // Create the SVG container.
-  const svg = d3.create("svg")
-      .attr("width", width)
+    
+    // Specify the color scale.
+    const color = d3.scaleOrdinal(d3.schemeCategory10);
+    
+    // The force simulation mutates links and nodes, so create a copy
+    // so that re-evaluating this cell produces the same result.
+    const links: LinkData[] = this.graphData.links.map(d => ({...d}));
+    const nodes: NodeData[] = this.graphData.nodes.map(d => ({...d}));
+    
+    // Create a simulation with several forces.
+    const simulation = d3.forceSimulation(nodes)
+    .force("link", d3.forceLink(links).id(d => (d as NodeData).id).distance(d => 100 + Math.sqrt(d.value) * 10)) // Example: variable length
+    // .force("charge", d3.forceManyBody().strength(d => (d as NodeData).group === 'Project' ? -200 : -50)) // Stronger repulsion for 'Project' nodes
+    .force("charge", d3.forceManyBody().strength(-3000)) 
+    .force("x", d3.forceX())
+    .force("y", d3.forceY())
+    .force("collide", d3.forceCollide(d => (d.radius ?? 20) + 2)) // +2 for padding
+    this.simulation = simulation;
+    
+    // Create the SVG container.
+    const svg = d3.create("svg")
+    .attr("width", width)
+    .attr("height", height)
+    .attr("viewBox", [-width / 2, -height / 2, width, height])
+    .attr("style", "max-width: 100%; height: auto;");
+    
+         this.resizeHandler = () => {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      svg.attr("width", width)
       .attr("height", height)
-      .attr("viewBox", [-width / 2, -height / 2, width, height])
-      .attr("style", "max-width: 100%; height: auto;");
-
+      .attr("viewBox", [-width / 2, -height / 2, width, height]);
+    };
+    
+    window.addEventListener('resize', this.resizeHandler);
+    
   // Add a line for each link, and a circle for each node.
   const link = svg.append("g")
       .attr("stroke", "#999")
@@ -72,11 +102,22 @@ export class TestComponentComponent implements AfterViewInit {
     .selectAll("circle")
     .data(nodes)
     .join("circle")
-      .attr("r", 5)
+      .attr("r", d => d.radius ?? 20) 
       .attr("fill", d => color(d.group));
 
   node.append("title")
       .text(d => d.id);
+
+    const labels = svg.append("g")
+      .selectAll("text")
+      .data(nodes)
+      .join("text")
+      .attr("x", d => d.x!)
+      .attr("y", d => d.y!)
+      .attr("text-anchor", "middle")
+      .attr("dy", ".35em")
+      .text(d => d.id)
+      .style("pointer-events", "none"); // So it doesn't block drag
 
   // Add a drag behavior.
   node.call((d3.drag() as any)
@@ -95,6 +136,9 @@ export class TestComponentComponent implements AfterViewInit {
     node
         .attr("cx", (d: NodeData) => d.x!)
         .attr("cy", (d: NodeData) => d.y!);
+    labels
+        .attr("x", (d: NodeData) => d.x!)
+        .attr("y", (d: NodeData) => d.y!);
   });
 
   // Reheat the simulation when drag starts, and fix the subject position.
@@ -119,7 +163,10 @@ export class TestComponentComponent implements AfterViewInit {
   }
 
   // Return the SVG element.
-  this.chartElement.nativeElement.appendChild(svg.node());
+  const svgNode = svg.node();
+  console.log(svgNode);
+  console.log(this.chartElement?.nativeElement);
+  this.chartElement.nativeElement.appendChild(svgNode);
   }
 
     ngOnDestroy(): void {
@@ -127,5 +174,8 @@ export class TestComponentComponent implements AfterViewInit {
     if (this.simulation) {
       this.simulation.stop();
     }
+    if (this.resizeHandler) {
+    window.removeEventListener('resize', this.resizeHandler);
+  }
   }
 }
