@@ -1,8 +1,10 @@
-import { AfterViewInit, Component, ElementRef, ViewChild, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild, OnDestroy, afterNextRender, OnInit, ApplicationRef } from '@angular/core';
 import * as d3 from 'd3';
 import graphDataJson from '../../assets/data.json';
 import { isPlatformBrowser } from '@angular/common';
 import { Inject, PLATFORM_ID } from '@angular/core';
+    import { filter } from 'rxjs/operators';
+
 
 interface NodeData extends d3.SimulationNodeDatum {
   id: string;
@@ -23,20 +25,47 @@ interface LinkData extends d3.SimulationLinkDatum<NodeData> {
   templateUrl: './test-component.component.html',
   styleUrl: './test-component.component.scss'
 })
-export class TestComponentComponent implements AfterViewInit, OnDestroy {
-  @ViewChild('chart', { static: true }) chartElement!: ElementRef;
+export class TestComponentComponent implements OnDestroy, OnInit {
+  @ViewChild('chart', { static: false }) chartElement!: ElementRef;
   graphData = graphDataJson;
   private simulation?: d3.Simulation<NodeData, LinkData>;
   private resizeHandler?: () => void;
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+  constructor(@Inject(PLATFORM_ID) private platformId: Object, private appRef: ApplicationRef) {
 
+  }
 
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
+    if (isPlatformBrowser(this.platformId) && this.appRef) {
+      this.appRef.isStable
+        .pipe(filter((isStable) => isStable))
+        .subscribe((isStable: boolean) => {
+          console.log('Application is stable, hydration complete!');
+          this.createContent();
+        });
+    }
+  }
+
+  private createContent(): void {
+    console.log('Creating content after hydration');
     
-    if (!isPlatformBrowser(this.platformId)) {
+    if (!this.chartElement?.nativeElement) {
+      console.error('Chart element not available');
       return;
     }
+
+    // Clear existing content first
+    this.chartElement.nativeElement.innerHTML = '';
+
+    const div = document.createElement('div');
+    div.innerHTML = '<p>Test content - Post Hydration</p>';
+    div.style.background = 'red';
+    div.style.padding = '20px';
+
+    this.chartElement.nativeElement.appendChild(div);
+    console.log('Content added after hydration');
+    
+    // Now call your D3 chart creation
     this.createChart();
   }
 
