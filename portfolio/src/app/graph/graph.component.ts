@@ -1,9 +1,9 @@
-import { AfterViewInit, Component, ElementRef, ViewChild, OnDestroy, afterNextRender, OnInit, ApplicationRef } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild, OnDestroy, afterNextRender, OnInit, ApplicationRef, AfterViewChecked, afterRender } from '@angular/core';
 import * as d3 from 'd3';
 import graphDataJson from '../../assets/data.json';
 import { isPlatformBrowser } from '@angular/common';
 import { Inject, PLATFORM_ID } from '@angular/core';
-    import { filter } from 'rxjs/operators';
+    import { filter, first } from 'rxjs/operators';
 
 
 interface NodeData extends d3.SimulationNodeDatum {
@@ -20,35 +20,64 @@ interface LinkData extends d3.SimulationLinkDatum<NodeData> {
 }
 
 @Component({
-  selector: 'app-test-component',
+  selector: 'graph-component',
   imports: [],
-  templateUrl: './test-component.component.html',
-  styleUrl: './test-component.component.scss'
+  templateUrl: './graph.component.html',
+  styleUrl: './graph.component.scss'
 })
-export class TestComponentComponent implements OnDestroy, OnInit {
+export class GraphComponent implements OnDestroy, OnInit, AfterViewInit {
   @ViewChild('chart', { static: false }) chartElement!: ElementRef;
   graphData = graphDataJson;
   private simulation?: d3.Simulation<NodeData, LinkData>;
   private resizeHandler?: () => void;
+  private lastHtmlContent = '';
+  private mutationObserver?: MutationObserver;
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object, private appRef: ApplicationRef) {
-
+    afterRender(() => {
+      console.log('After render called');
+      if (!this.chartElement?.nativeElement?.hasChildNodes()) {
+        this.createContent();
+      }
+    });
   }
 
   ngOnInit(): void {
-    if (isPlatformBrowser(this.platformId) && this.appRef) {
-      this.appRef.isStable
-        .pipe(filter((isStable) => isStable))
-        .subscribe((isStable: boolean) => {
-          console.log('Application is stable, hydration complete!');
-          this.createContent();
-        });
-    }
+    // Remove the hydration logic from here
   }
 
-  private createContent(): void {
-    console.log('Creating content after hydration');
+  
+
+  ngAfterViewInit(): void {
+  // Initial chart creation
+  this.createContent();
+  if (isPlatformBrowser(this.platformId)) {
+    console.log('after view triggered');
+    const observer = new MutationObserver((mutations) => {
+      console.log('MutationObserver triggered:', mutations);
+      
+      // Check if the chart div is empty (no SVG)
+      const chartIsEmpty = !this.chartElement.nativeElement.hasChildNodes();
+      console.log('chart:', this.chartElement.nativeElement, 'is empty:', chartIsEmpty);
+
+      if (chartIsEmpty) {
+        console.log('Chart is empty, recreating...');
+        setTimeout(() => this.createContent(), 10); // Small delay to avoid infinite loops
+      }
+    });
     
+    // Watch the chart element for changes
+    observer.observe(this.chartElement.nativeElement, {
+      childList: true,
+      subtree: true // Only watch direct children
+    });
+    
+    this.mutationObserver = observer;
+  }
+}
+
+  private createContent(): void {
+
     if (!this.chartElement?.nativeElement) {
       console.error('Chart element not available');
       return;
@@ -56,16 +85,6 @@ export class TestComponentComponent implements OnDestroy, OnInit {
 
     // Clear existing content first
     this.chartElement.nativeElement.innerHTML = '';
-
-    const div = document.createElement('div');
-    div.innerHTML = '<p>Test content - Post Hydration</p>';
-    div.style.background = 'red';
-    div.style.padding = '20px';
-
-    this.chartElement.nativeElement.appendChild(div);
-    console.log('Content added after hydration');
-    
-    // Now call your D3 chart creation
     this.createChart();
   }
 
@@ -74,6 +93,11 @@ export class TestComponentComponent implements OnDestroy, OnInit {
     // Clear any existing chart
     if (this.chartElement?.nativeElement) {
       this.chartElement.nativeElement.innerHTML = '';
+    }
+    
+    // Guard window access
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
     }
     
     // Specify the dimensions of the chart.
@@ -106,16 +130,21 @@ export class TestComponentComponent implements OnDestroy, OnInit {
     .attr("viewBox", [-width / 2, -height / 2, width, height])
     .attr("style", "max-width: 100%; height: auto;");
     
-         this.resizeHandler = () => {
-      width = window.innerWidth;
-      height = window.innerHeight;
-      svg.attr("width", width)
-      .attr("height", height)
-      .attr("viewBox", [-width / 2, -height / 2, width, height]);
+         // Guard the resize handler setup
+    this.resizeHandler = () => {
+      if (isPlatformBrowser(this.platformId)) {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        svg.attr("width", width)
+          .attr("height", height)
+          .attr("viewBox", [-width / 2, -height / 2, width, height]);
+      }
     };
     
-    window.addEventListener('resize', this.resizeHandler);
-    
+    if (isPlatformBrowser(this.platformId)) {
+      window.addEventListener('resize', this.resizeHandler);
+    }
+
   // Add a line for each link, and a circle for each node.
   const link = svg.append("g")
       .attr("stroke", "#999")
@@ -193,8 +222,8 @@ export class TestComponentComponent implements OnDestroy, OnInit {
 
   // Return the SVG element.
   const svgNode = svg.node();
-  console.log(svgNode);
-  console.log(this.chartElement?.nativeElement);
+  // console.log(svgNode);
+  // console.log(this.chartElement?.nativeElement);
   this.chartElement.nativeElement.appendChild(svgNode);
   }
 
@@ -203,8 +232,24 @@ export class TestComponentComponent implements OnDestroy, OnInit {
     if (this.simulation) {
       this.simulation.stop();
     }
-    if (this.resizeHandler) {
-    window.removeEventListener('resize', this.resizeHandler);
+    if (this.resizeHandler && isPlatformBrowser(this.platformId)) {
+      window.removeEventListener('resize', this.resizeHandler);
+    }
   }
-  }
+
+  // ngAfterViewChecked(): void {
+  //   if (isPlatformBrowser(this.platformId)) {
+  //     console.log('After view checked called');
+  //     // Get current HTML content
+  //     const currentHtml = this.chartElement?.nativeElement?.innerHTML || '';
+      
+  //     // Check if HTML content has changed and chart is empty
+  //     if (currentHtml !== this.lastHtmlContent && !this.chartElement?.nativeElement?.hasChildNodes()) {
+  //       console.log('HTML changed and chart is empty, recreating...');
+  //       this.createContent();
+  //     }
+      
+  //     this.lastHtmlContent = currentHtml;
+  //   }
+  // }
 }

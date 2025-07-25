@@ -1,0 +1,82 @@
+app-my-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 10vh;
+}
+
+main {
+  --scroll-percent: 0%;
+  background: color-mix(in srgb,
+      #00ff00 calc(100% - var(--scroll-percent)),
+      #0000ff var(--scroll-percent));
+  padding: 0;
+}
+
+.header-landing {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  padding: 0;
+}
+
+.side-bubbles-left {
+  position: absolute;
+  height: 100%;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  pointer-events: none;
+  
+  // Initial position: off-screen to the left
+  transform: translateX(-100%);
+  animation: slideInFromLeft 1.5s ease-out forwards;
+
+  img:nth-child(1) {
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.side-bubbles-right {
+  position: absolute;
+  height: 100%;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  
+  // Initial position: off-screen to the right
+  transform: translateX(100%);
+  animation: slideInFromRight 1.5s ease-out 0.3s forwards;
+
+  img:nth-child(1) {
+    height: 100%;
+    object-fit: cover;
+    transform: scaleX(-1); // Mirrors the image horizontally
+  }
+}
+
+// Animation for left side bubbles
+@keyframes slideInFromLeft {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+// Animation for right side bubbles
+@keyframes slideInFromRight {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
