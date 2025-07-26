@@ -14,8 +14,14 @@ header {
             left: 0;
             width: 100%;
             height: 80%;
-            background-color: white;
-            z-index: -1000; 
+            transform: translateY(calc(-100% - (clamp(30%, var(--scroll-percent), 50%) - 30%) * -5));
+            // background: linear-gradient(135deg, rgb(0, 88, 12), rgb(0, 98, 15));
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            // border-radius: 0 0 400px 400px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            z-index: -1000;
+            transition: transform 0.1s ease-out;
         }
     }
 
@@ -57,23 +63,27 @@ li {
         display: block;
         font-size: clamp(1rem, 2.5vw, 3rem);
         text-decoration: none;
-        font-weight: 600;
+        font-weight: 100;
         border-radius: 2rem;
         width: 100%;
         height: 100%; // Now it will fill the li
         padding: 2rem 0; // Move padding here
-        box-shadow: 0 2px 8px rgba(0,194,0,0.08);
         color: black;
         display: flex; // Add this
         align-items: center; // Center content vertically
         justify-content: center; // Center content horizontally
+        color: color-mix(in srgb, 
+        black calc(100% - (clamp(30%, var(--scroll-percent), 50%) - 30%) * 5), 
+        white calc((clamp(30%, var(--scroll-percent), 50%) - 30%) * 5)
+        );
+        
+        transition: color 0.1s ease-out;
     }
     
     &:hover {
-        color: white;
         background: rgb(0, 155, 21);
         a {
-            color: rgb(3, 255, 37);
+            color: rgb(3, 255, 37) !important; // Override the scroll-based color on hover
         }
     }
 }
@@ -98,6 +108,9 @@ li {
     header {
         nav {
             height: 50%;
+            &::before {
+                height: 50%;
+            }
         }
     }
     

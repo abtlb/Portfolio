@@ -25,7 +25,7 @@ interface LinkData extends d3.SimulationLinkDatum<NodeData> {
   templateUrl: './graph.component.html',
   styleUrl: './graph.component.scss'
 })
-export class GraphComponent implements OnDestroy, OnInit, AfterViewInit {
+export class GraphComponent implements OnDestroy, AfterViewInit {
   @ViewChild('chart', { static: false }) chartElement!: ElementRef;
   graphData = graphDataJson;
   private simulation?: d3.Simulation<NodeData, LinkData>;
@@ -35,15 +35,10 @@ export class GraphComponent implements OnDestroy, OnInit, AfterViewInit {
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object, private appRef: ApplicationRef) {
     afterRender(() => {
-      console.log('After render called');
       if (!this.chartElement?.nativeElement?.hasChildNodes()) {
         this.createContent();
       }
     });
-  }
-
-  ngOnInit(): void {
-    // Remove the hydration logic from here
   }
 
   
@@ -161,7 +156,12 @@ export class GraphComponent implements OnDestroy, OnInit, AfterViewInit {
     .data(nodes)
     .join("circle")
       .attr("r", d => d.radius ?? 20) 
-      .attr("fill", d => color(d.group));
+      .attr("fill", d => color(d.group))
+      .style("cursor", "pointer") // Add cursor pointer
+    .on("click", (event, d) => {
+      // Handle node click
+      this.onNodeClick(d);
+    });
 
   node.append("title")
       .text(d => d.id);
@@ -236,6 +236,35 @@ export class GraphComponent implements OnDestroy, OnInit, AfterViewInit {
       window.removeEventListener('resize', this.resizeHandler);
     }
   }
+
+  private onNodeClick(node: NodeData): void {
+  console.log('Node clicked:', node);
+  
+  // You can now access all node properties
+  console.log('Node ID:', node.id);
+  console.log('Node Group:', node.group);
+  console.log('Citing Patents Count:', node.citing_patents_count);
+  
+  // Call method to display HTML content
+  this.displayNodeInfo(node);
+}
+
+private displayNodeInfo(node: NodeData): void {
+  // Create or update HTML content based on the clicked node
+  const infoContainer = document.getElementById('node-info');
+  
+  if (infoContainer) {
+    infoContainer.innerHTML = `
+      <div class="node-details">
+        <h3>${node.id}</h3>
+        <p><strong>Group:</strong> ${node.group}</p>
+        <p><strong>Patents:</strong> ${node.citing_patents_count || 'N/A'}</p>
+        <p><strong>Radius:</strong> ${node.radius || 20}</p>
+      </div>
+    `;
+    infoContainer.style.display = 'block';
+  }
+}
 
   // ngAfterViewChecked(): void {
   //   if (isPlatformBrowser(this.platformId)) {
