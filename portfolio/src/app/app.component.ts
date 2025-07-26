@@ -14,7 +14,7 @@ import { isPlatformBrowser } from '@angular/common';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent implements AfterViewInit, OnDestroy{
+export class AppComponent implements AfterViewInit, OnDestroy {
   @ViewChild('gradient', { static: true, read: ElementRef }) gradient!: ElementRef;
   title = 'portfolio';
   platformId = inject(PLATFORM_ID);
@@ -26,20 +26,21 @@ export class AppComponent implements AfterViewInit, OnDestroy{
   }
 
 
-updateGradient = () => {
-  if (isPlatformBrowser(this.platformId)) {
-    const scrollTop = window.scrollY;
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    let percent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+  updateGradient = () => {
+    if (isPlatformBrowser(this.platformId)) {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      let percent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
 
-    percent = Math.max(0, percent); 
-    percent = Math.min(100, percent);
+      percent = Math.max(0, percent);
+      percent = Math.min(100, percent);
 
-    if (this.gradient?.nativeElement) {
-      this.gradient.nativeElement.style.setProperty('--scroll-percent', `${percent}%`);
+      if (this.gradient?.nativeElement) {
+        this.gradient.nativeElement.style.setProperty('--scroll-percent', `${percent}%`);
+        this.gradient.nativeElement.style.setProperty('--scroll-percent-num', `${percent}`);
+      }
     }
-  }
-};
+  };
 
   ngOnDestroy(): void {
     if (isPlatformBrowser(this.platformId)) {
