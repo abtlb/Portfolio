@@ -3,14 +3,16 @@ import * as d3 from 'd3';
 import graphDataJson from '../../assets/data.json';
 import { isPlatformBrowser } from '@angular/common';
 import { Inject, PLATFORM_ID } from '@angular/core';
-    import { filter, first } from 'rxjs/operators';
-
+import { CommonModule } from '@angular/common';
 
 interface NodeData extends d3.SimulationNodeDatum {
   id: string;
   group: string;
   radius?: number;
   citing_patents_count?: number;
+  img?: string;
+  title?: string;
+  description?: string;
 }
 
 interface LinkData extends d3.SimulationLinkDatum<NodeData> {
@@ -21,17 +23,18 @@ interface LinkData extends d3.SimulationLinkDatum<NodeData> {
 
 @Component({
   selector: 'graph-component',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './graph.component.html',
   styleUrl: './graph.component.scss'
 })
-export class GraphComponent implements OnDestroy, AfterViewInit {
+export class GraphComponent implements OnDestroy {
   @ViewChild('chart', { static: false }) chartElement!: ElementRef;
   graphData = graphDataJson;
   private simulation?: d3.Simulation<NodeData, LinkData>;
   private resizeHandler?: () => void;
-  private lastHtmlContent = '';
-  private mutationObserver?: MutationObserver;
+  showNodeInfo = false;
+  selectedNode: NodeData | null = null;
+  
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object, private appRef: ApplicationRef) {
     afterRender(() => {
@@ -42,35 +45,6 @@ export class GraphComponent implements OnDestroy, AfterViewInit {
   }
 
   
-
-  ngAfterViewInit(): void {
-  // Initial chart creation
-  this.createContent();
-  if (isPlatformBrowser(this.platformId)) {
-    console.log('after view triggered');
-    const observer = new MutationObserver((mutations) => {
-      console.log('MutationObserver triggered:', mutations);
-      
-      // Check if the chart div is empty (no SVG)
-      const chartIsEmpty = !this.chartElement.nativeElement.hasChildNodes();
-      console.log('chart:', this.chartElement.nativeElement, 'is empty:', chartIsEmpty);
-
-      if (chartIsEmpty) {
-        console.log('Chart is empty, recreating...');
-        setTimeout(() => this.createContent(), 10); // Small delay to avoid infinite loops
-      }
-    });
-    
-    // Watch the chart element for changes
-    observer.observe(this.chartElement.nativeElement, {
-      childList: true,
-      subtree: true // Only watch direct children
-    });
-    
-    this.mutationObserver = observer;
-  }
-}
-
   private createContent(): void {
 
     if (!this.chartElement?.nativeElement) {
@@ -157,11 +131,16 @@ export class GraphComponent implements OnDestroy, AfterViewInit {
     .join("circle")
       .attr("r", d => d.radius ?? 20) 
       .attr("fill", d => color(d.group))
-      .style("cursor", "pointer") // Add cursor pointer
-    .on("click", (event, d) => {
-      // Handle node click
-      this.onNodeClick(d);
-    });
+      .style("cursor", "pointer")
+      .on("click", (event, d) => {
+        this.onNodeClick(d);
+      })
+      .on("mouseover", function(event, d) {
+        d3.select(this).transition().duration(150).attr("r", (d.radius ?? 20) * 1.2);
+      })
+      .on("mouseout", function(event, d) {
+        d3.select(this).transition().duration(150).attr("r", d.radius ?? 20);
+      });
 
   node.append("title")
       .text(d => d.id);
@@ -238,47 +217,17 @@ export class GraphComponent implements OnDestroy, AfterViewInit {
   }
 
   private onNodeClick(node: NodeData): void {
-  console.log('Node clicked:', node);
-  
-  // You can now access all node properties
-  console.log('Node ID:', node.id);
-  console.log('Node Group:', node.group);
-  console.log('Citing Patents Count:', node.citing_patents_count);
-  
-  // Call method to display HTML content
-  this.displayNodeInfo(node);
-}
-
-private displayNodeInfo(node: NodeData): void {
-  // Create or update HTML content based on the clicked node
-  const infoContainer = document.getElementById('node-info');
-  
-  if (infoContainer) {
-    infoContainer.innerHTML = `
-      <div class="node-details">
-        <h3>${node.id}</h3>
-        <p><strong>Group:</strong> ${node.group}</p>
-        <p><strong>Patents:</strong> ${node.citing_patents_count || 'N/A'}</p>
-        <p><strong>Radius:</strong> ${node.radius || 20}</p>
-      </div>
-    `;
-    infoContainer.style.display = 'block';
+    this.selectedNode = node;
+    this.showNodeInfo = true;
+    document.body.style.overflow = 'hidden';
+    this.appRef.tick();
+    console.log('Node clicked:', node);
   }
-}
 
-  // ngAfterViewChecked(): void {
-  //   if (isPlatformBrowser(this.platformId)) {
-  //     console.log('After view checked called');
-  //     // Get current HTML content
-  //     const currentHtml = this.chartElement?.nativeElement?.innerHTML || '';
-      
-  //     // Check if HTML content has changed and chart is empty
-  //     if (currentHtml !== this.lastHtmlContent && !this.chartElement?.nativeElement?.hasChildNodes()) {
-  //       console.log('HTML changed and chart is empty, recreating...');
-  //       this.createContent();
-  //     }
-      
-  //     this.lastHtmlContent = currentHtml;
-  //   }
-  // }
+  closeNodeInfo(): void {
+    this.showNodeInfo = false;
+    this.selectedNode = null;
+    document.body.style.overflow = 'auto';
+    this.appRef.tick();
+  }
 }

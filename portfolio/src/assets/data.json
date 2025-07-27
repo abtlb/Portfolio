@@ -30,7 +30,9 @@
         {
             "id": "Tickets Wizard ",
             "group": "Project",
-            "radius": 60
+            "radius": 60,
+            "img": "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80",
+            "description": "A web application that allows users to create, manage, and track tickets for various events. It includes features such as ticket booking, event management, and user authentication."
         }
         
     ],

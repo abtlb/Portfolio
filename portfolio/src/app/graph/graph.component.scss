@@ -1,3 +1,97 @@
-.chart {
+.node-info-panel {
+    position: fixed;
+    opacity: 1;
+    top: 0;
+    left: 0;
+    background-color: black;
     width: 80vw;
+    height: 100vh;
+    z-index: 2000;
+    border-radius: 0 0 200vw 0;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: -1;
+    }
+
+       .close-btn {
+        align-self: flex-end;
+        margin: 1rem;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #ff5f57, #ff453a);
+        border: 1px solid #d70015;
+        cursor: pointer;
+        position: relative;
+        transition: all 0.2s ease;
+        
+        // Remove default button styles
+        outline: none;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        
+        // The X in the middle
+        &::before {
+            content: '×';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #7a0000;
+            font-size: 12px;
+            font-weight: bold;
+            line-height: 1;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        
+        // Show X on hover
+        &:hover {
+            background: linear-gradient(135deg, #ff6b63, #ff5147);
+            transform: scale(1.05);
+            
+            &::before {
+                opacity: 1;
+            }
+        }
+        
+        // Pressed state
+        &:active {
+            transform: scale(0.95);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+    }
+}
+
+.chart {
+    width: 100vw;
+}
+
+.node-details {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    padding-left: 10rem;
+    height: 100%;
+    width: 100%;
+    gap: 2rem;
+    justify-content: start;
+}
+
+@media screen and (max-width: 768px) {
+    .node-info-panel {
+        width: 100vw;
+        border-radius: 0 0 400vw 0;
+    }
 }

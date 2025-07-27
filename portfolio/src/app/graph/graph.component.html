@@ -1,3 +1,17 @@
 <section #chartContainer class="chart">
     <div #chart></div>
+    <div #chart class="chart-container"></div>
+
+    <div *ngIf="showNodeInfo && selectedNode" class="node-info-panel">
+        <button class="close-btn" (click)="closeNodeInfo()">×</button>
+        <div class="node-details">
+            <h2>{{ selectedNode!.id }}</h2>
+            <div>
+                <img *ngIf="selectedNode!.img" [src]="selectedNode!.img" alt="{{ selectedNode!.id }}" class="node-image">
+            </div>
+            <div *ngIf="selectedNode!.id.trim().toLowerCase() === 'tickets wizard'" class="node-content">
+                Tickets wizard is awesommme
+            </div>
+        </div>
+    </div>
 </section>
