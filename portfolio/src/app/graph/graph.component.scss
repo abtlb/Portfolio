@@ -4,7 +4,7 @@
     top: 0;
     left: 0;
     background-color: black;
-    width: 80vw;
+    width: 70vw;
     height: 100vh;
     z-index: 2000;
     border-radius: 0 0 200vw 0;
@@ -14,6 +14,25 @@
     align-items: center;
     justify-content: start;
 
+    // Initial hidden state
+    opacity: 0;
+    transform: translateX(-50%) scale(0.85);
+    visibility: hidden;
+    pointer-events: none;
+
+    // Animation properties
+    transition:
+        opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        visibility 0.3s;
+
+    &.visible {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+        visibility: visible;
+        pointer-events: auto;
+    }
+
     &::before {
         content: '';
         position: absolute;
@@ -21,56 +40,62 @@
         left: 0;
         width: 100vw;
         height: 100vh;
-        background-color: rgba(0, 0, 0, 0.7);
+        background-color: rgba(0, 0, 0, 0.0);
         z-index: -1;
+        transition: background-color 0.1s  cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-       .close-btn {
-        align-self: flex-end;
-        margin: 1rem;
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, #ff5f57, #ff453a);
-        border: 1px solid #d70015;
-        cursor: pointer;
-        position: relative;
-        transition: all 0.2s ease;
-        
-        // Remove default button styles
-        outline: none;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        
-        // The X in the middle
+    &.visible::before {
+        background-color: rgba(0, 0, 0, 0.7);
+    }
+}
+
+.close-btn {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    align-self: flex-end;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ff5f57, #ff453a);
+    border: 1px solid #d70015;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    // Remove default button styles
+    outline: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
+    // The X in the middle
+    &::before {
+        content: '×';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: #7a0000;
+        font-size: 12px;
+        font-weight: bold;
+        line-height: 1;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+    }
+
+    // Show X on hover
+    &:hover {
+        background: linear-gradient(135deg, #ff6b63, #ff5147);
+        transform: scale(1.05);
+
         &::before {
-            content: '×';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: #7a0000;
-            font-size: 12px;
-            font-weight: bold;
-            line-height: 1;
-            opacity: 0;
-            transition: opacity 0.2s ease;
+            opacity: 1;
         }
-        
-        // Show X on hover
-        &:hover {
-            background: linear-gradient(135deg, #ff6b63, #ff5147);
-            transform: scale(1.05);
-            
-            &::before {
-                opacity: 1;
-            }
-        }
-        
-        // Pressed state
-        &:active {
-            transform: scale(0.95);
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-        }
+    }
+
+    // Pressed state
+    &:active {
+        transform: scale(0.95);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
     }
 }
 
@@ -80,18 +105,81 @@
 
 .node-details {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: start;
-    padding-left: 10rem;
+    padding-left: 3rem;
+    box-sizing: border-box;
     height: 100%;
     width: 100%;
-    gap: 2rem;
     justify-content: start;
+
+    h2 {
+        font-size: 4rem;
+        box-sizing: border-box;
+        padding: 2rem 2rem 0 0;
+    }
+}
+
+.image-and-content {
+    align-self: flex-start;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    width: 100%;
+    height: 100%;
+}
+
+.node-image {
+    width: 70%;
+    height: 30rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        border-radius: 1rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+}
+
+.node-content {
+    font-size: 2rem;
 }
 
 @media screen and (max-width: 768px) {
     .node-info-panel {
+        justify-content: center;
         width: 100vw;
         border-radius: 0 0 400vw 0;
+    }
+
+    .node-details {
+        flex-direction: column-reverse;
+        align-items: center;
+        padding: 0;
+
+        h2 {
+            margin: 3rem;
+            font-size: 2.5rem;
+            padding: 0;
+        }
+    }
+
+    .node-image {
+        height: auto;
+        width: 100%;
+
+        img {
+            width: 90%;
+        }
+    }
+
+    .node-content {
+        font-size: 1.5rem;
+        padding: 1rem;
     }
 }

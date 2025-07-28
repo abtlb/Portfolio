@@ -2,16 +2,19 @@
     <div #chart></div>
     <div #chart class="chart-container"></div>
 
-    <div *ngIf="showNodeInfo && selectedNode" class="node-info-panel">
+    <div [class.visible]="showNodeInfo && selectedNode" class="node-info-panel">
         <button class="close-btn" (click)="closeNodeInfo()">×</button>
-        <div class="node-details">
+        <div *ngIf="selectedNode" class="node-details">
+            <div class="image-and-content">
+                <div class="node-image">
+                    <img *ngIf="selectedNode!.img" [src]="selectedNode!.img" alt="{{ selectedNode!.id }}"
+                    class="node-image">
+                </div>
+                <div *ngIf="selectedNode!.id.trim().toLowerCase() === 'tickets wizard'" class="node-content">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, cupiditate! Dolore veniam cum quibusdam consequuntur vel? A sunt doloremque debitis natus nesciunt tempora consectetur! Molestias autem temporibus, quod quae veritatis aspernatur rerum perspiciatis. Iure eveniet delectus ullam facilis, adipisci tempora!
+                </div>
+            </div>
             <h2>{{ selectedNode!.id }}</h2>
-            <div>
-                <img *ngIf="selectedNode!.img" [src]="selectedNode!.img" alt="{{ selectedNode!.id }}" class="node-image">
-            </div>
-            <div *ngIf="selectedNode!.id.trim().toLowerCase() === 'tickets wizard'" class="node-content">
-                Tickets wizard is awesommme
-            </div>
         </div>
     </div>
 </section>
