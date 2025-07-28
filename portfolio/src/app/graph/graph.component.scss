@@ -3,11 +3,16 @@
     opacity: 1;
     top: 0;
     left: 0;
-    background-color: black;
+    background: linear-gradient(135deg,
+    rgb(0, 152, 152), 
+    rgb(50, 50, 50),
+    rgb(100, 100, 100),
+    rgb(0, 152, 152)); 
     width: 70vw;
     height: 100vh;
     z-index: 2000;
     border-radius: 0 0 200vw 0;
+    border-width: 10px;
     color: white;
     display: flex;
     flex-direction: column;
@@ -42,7 +47,7 @@
         height: 100vh;
         background-color: rgba(0, 0, 0, 0.0);
         z-index: -1;
-        transition: background-color 0.1s  cubic-bezier(0.4, 0, 0.2, 1);
+        transition: background-color 0.1s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     &.visible::before {
@@ -115,6 +120,8 @@
 
     h2 {
         font-size: 4rem;
+        font-weight: 600;
+        text-shadow: rgb(0, 152, 152) 0 0 13px;
         box-sizing: border-box;
         padding: 2rem 2rem 0 0;
     }
@@ -131,23 +138,63 @@
 }
 
 .node-image {
+    margin: 2rem 0;
     width: 70%;
-    height: 30rem;
+    height: auto;
     display: flex;
     align-items: center;
     justify-content: center;
+    // padding: 2rem 0;
 
     img {
         width: 100%;
-        height: 100%;
+        height: 20vh;
         object-fit: contain;
-        border-radius: 1rem;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
 }
 
 .node-content {
-    font-size: 2rem;
+    font-size: clamp(1rem, 3vw, 1.7rem); // min, preferred, max
+    height: 100%;
+    overflow-y: auto;
+    width: 100%;
+
+    a {
+        color: white;
+        text-decoration: underline;
+        font-weight: bold;
+    }
+}
+
+.tech-and-features {
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    justify-content: space-between;
+
+    h3 {
+        text-shadow: rgb(0, 152, 152) 0 0 13px;
+        text-align: center;
+        font-size: 2.5rem;
+    }
+
+    ul {
+        padding: 0 0 0 2rem;
+        list-style: none;
+    }
+
+    li {
+        position: relative;
+        padding-left: 2rem;
+        font-size: 1.3rem;
+        
+        &::before {
+            content: '◉'; // Change to any emoji you like
+            position: absolute;
+            left: 0;
+            font-size: 0.8em;
+        }
+    }
 }
 
 @media screen and (max-width: 768px) {
@@ -163,23 +210,39 @@
         padding: 0;
 
         h2 {
-            margin: 3rem;
+            // margin: 3rem;
             font-size: 2.5rem;
             padding: 0;
+            width: 100%;
+            text-align: center;
         }
     }
 
     .node-image {
         height: auto;
         width: 100%;
+        margin: 0;
+        margin-bottom: 1rem;
 
         img {
             width: 90%;
         }
     }
 
+    .tech-and-features {
+        h3 {
+            font-size: 1.8rem;
+        }
+    }
+
     .node-content {
-        font-size: 1.5rem;
-        padding: 1rem;
+        font-size: clamp(0.9rem, 4vw, 1.5rem);
+        width: 90%;
+        align-self: center;
+    }
+
+    .close-btn {
+        top: 1rem;
+        right: 1rem;
     }
 }

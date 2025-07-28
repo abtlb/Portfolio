@@ -1,10 +1,31 @@
 {
     "nodes": [
         {
-            "id": "Skills",
-            "group": "Type",
-            "radius": 50,
-            "citing_patents_count": 2
+            "id": "IRIS ",
+            "group": "Project",
+            "radius": 70,
+            "img": "images/iris.png"
+        },
+        {
+            "id": "Tickets Wizard",
+            "group": "Project",
+            "radius": 60,
+            "img": "images/ticketswizard.png"
+        },
+        {
+            "id": "Portfolio ",
+            "group": "Project",
+            "radius": 60
+        },
+        {
+            "id": "NTM",
+            "group": "Project",
+            "radius": 60
+        },
+        {
+            "id": "Game Renderer",
+            "group": "Project",
+            "radius": 60
         },
         {
             "id": "CSS",
@@ -16,45 +37,139 @@
             "group": "Skill",
             "radius": 30
         },
-
         {
-            "id": "Projects ",
-            "group": "Type",
-            "radius": 50
-        },
-        {
-            "id": "IRIS ",
-            "group": "Project",
+            "id": "Angular",
+            "group": "Skill",
             "radius": 30
         },
         {
-            "id": "Tickets Wizard ",
-            "group": "Project",
-            "radius": 60,
-            "img": "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80",
-            "description": "A web application that allows users to create, manage, and track tickets for various events. It includes features such as ticket booking, event management, and user authentication."
+            "id": ".NET",
+            "group": "Skill",
+            "radius": 30
+        },
+        {
+            "id": "C#",
+            "group": "Skill",
+            "radius": 30
+        },
+        {
+            "id": "Typescript",
+            "group": "Skill",
+            "radius": 30
+        },
+        {
+            "id": "Flutter",
+            "group": "Skill",
+            "radius": 30
+        },
+        {
+            "id": "MSSQL",
+            "group": "Skill",
+            "radius": 30
+        },
+        {
+            "id": "C++",
+            "group": "Skill",
+            "radius": 30
+        },
+        {
+            "id": "OpenGL",
+            "group": "Skill",
+            "radius": 30
         }
-        
     ],
     "links": [
-                {
-            "source": "Skills",
+        {
+            "source": "Tickets Wizard",
             "target": "HTML",
             "value": 5
         },
         {
-            "source": "Skills",
+            "source": "Tickets Wizard",
             "target": "CSS",
             "value": 5
         },
         {
-            "source": "Projects ",
-            "target": "Tickets Wizard ",
+            "source": "Tickets Wizard",
+            "target": "Angular",
             "value": 5
         },
         {
-            "source": "Projects ",
-            "target": "IRIS ",
+            "source": "Tickets Wizard",
+            "target": "C#",
+            "value": 5
+        },
+        {
+            "source": "Tickets Wizard",
+            "target": "Typescript",
+            "value": 5
+        },
+        {
+            "source": "Tickets Wizard",
+            "target": ".NET",
+            "value": 5
+        },
+        {
+            "source": "Tickets Wizard",
+            "target": "MSSQL",
+            "value": 5
+        },
+
+        {
+            "source": "IRIS ",
+            "target": "MSSQL",
+            "value": 5
+        },
+        {
+            "source": "IRIS ",
+            "target": "Flutter",
+            "value": 5
+        },
+        {
+            "source": "IRIS ",
+            "target": ".NET",
+            "value": 5
+        },
+        {
+            "source": "IRIS ",
+            "target": "C#",
+            "value": 5
+        },
+
+        {
+            "source": "Portfolio ",
+            "target": "Angular",
+            "value": 5
+        },
+        {
+            "source": "Portfolio ",
+            "target": "CSS",
+            "value": 5
+        },
+        {
+            "source": "Portfolio ",
+            "target": "HTML",
+            "value": 5
+        },
+        {
+            "source": "Portfolio ",
+            "target": "Typescript",
+            "value": 5
+        },
+
+        {
+            "source": "NTM",
+            "target": "C++",
+            "value": 5
+        },
+        {
+            "source": "Game Renderer",
+            "target": "C++",
+            "value": 5
+        },
+        {
+            "source": "Game Renderer",
+            "target": "OpenGL",
             "value": 5
         }
     ]

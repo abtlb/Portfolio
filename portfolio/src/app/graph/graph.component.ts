@@ -81,12 +81,26 @@ export class GraphComponent implements OnDestroy {
     // so that re-evaluating this cell produces the same result.
     const links: LinkData[] = this.graphData.links.map(d => ({...d}));
     const nodes: NodeData[] = this.graphData.nodes.map(d => ({...d}));
+
+    const calculateStrength = (width: number) => {
+      const minWidth = 300;
+      const maxWidth = 1200;
+      const minStrength = -700;
+      const maxStrength = -3000;
+
+      const strength = d3.scaleLinear()
+        .domain([minWidth, maxWidth])
+        .range([minStrength, maxStrength])
+        .clamp(true);
+
+      return strength(width);
+    }
     
     // Create a simulation with several forces.
     const simulation = d3.forceSimulation(nodes)
     .force("link", d3.forceLink(links).id(d => (d as NodeData).id).distance(d => 100 + Math.sqrt(d.value) * 10)) // Example: variable length
     // .force("charge", d3.forceManyBody().strength(d => (d as NodeData).group === 'Project' ? -200 : -50)) // Stronger repulsion for 'Project' nodes
-    .force("charge", d3.forceManyBody().strength(-3000)) 
+    .force("charge", d3.forceManyBody().strength(calculateStrength(width))) // Dynamic charge strength based on width
     .force("x", d3.forceX())
     .force("y", d3.forceY())
     .force("collide", d3.forceCollide(d => (d.radius ?? 20) + 2)) // +2 for padding
@@ -131,11 +145,17 @@ export class GraphComponent implements OnDestroy {
     .join("circle")
       .attr("r", d => d.radius ?? 20) 
       .attr("fill", d => color(d.group))
-      .style("cursor", "pointer")
+      .style("cursor", d => d.group === "Project" ? "pointer" : "default")
       .on("click", (event, d) => {
+        if (d.group !== 'Project') {
+          return; 
+        }
         this.onNodeClick(d);
       })
       .on("mouseover", function(event, d) {
+        if(d.group !== 'Project') {
+          return;
+        }
         d3.select(this).transition().duration(150).attr("r", (d.radius ?? 20) * 1.2);
       })
       .on("mouseout", function(event, d) {
