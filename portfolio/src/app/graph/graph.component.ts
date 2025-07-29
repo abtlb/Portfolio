@@ -13,6 +13,7 @@ interface NodeData extends d3.SimulationNodeDatum {
   img?: string;
   title?: string;
   description?: string;
+  fontSize?: number;
 }
 
 interface LinkData extends d3.SimulationLinkDatum<NodeData> {
@@ -160,7 +161,7 @@ export class GraphComponent implements OnDestroy {
       })
       .on("mouseout", function(event, d) {
         d3.select(this).transition().duration(150).attr("r", d.radius ?? 20);
-      });
+      }); 
 
   node.append("title")
       .text(d => d.id);
@@ -174,7 +175,8 @@ export class GraphComponent implements OnDestroy {
       .attr("text-anchor", "middle")
       .attr("dy", ".35em")
       .text(d => d.id)
-      .style("pointer-events", "none"); // So it doesn't block drag
+      .style("pointer-events", "none")
+      .style("font-size", d => `${d.fontSize ? d.fontSize : 15}px`); // So it doesn't block drag
 
   // Add a drag behavior.
   node.call((d3.drag() as any)

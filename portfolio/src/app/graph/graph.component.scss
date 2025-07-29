@@ -1,3 +1,24 @@
+.chart-container {
+background:
+linear-gradient(135deg, #70809000 21px, #86868649 22px, #86868649 24px, transparent 24px, transparent 67px, #86868649 67px, #86868649 69px, transparent 69px),
+linear-gradient(225deg, #70809000 21px, #86868649 22px, #86868649 24px, transparent 24px, transparent 67px, #86868649 67px, #86868649 69px, transparent 69px) 0 64px;
+background-color: color-mix(in srgb,
+      #00ff00 calc(100% - var(--scroll-percent)),
+      #4242cc var(--scroll-percent));
+background-size: 64px 128px;
+    box-sizing: border-box;
+    // border: 4px solid rgba(0, 0, 0, 0.439);
+    // border-radius: 8px;
+}
+
+h1 {
+    text-align: center;
+    font-size: 3.5rem;
+    color: white;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    margin-bottom: 1rem;
+}
+
 .node-info-panel {
     position: fixed;
     opacity: 1;
@@ -166,6 +187,10 @@
     }
 }
 
+.network-traffic-monitor {
+    padding-top: 10rem;
+}
+
 .tech-and-features {
     display: flex;
     flex-direction: row;
@@ -245,4 +270,9 @@
         top: 1rem;
         right: 1rem;
     }
+
+    .network-traffic-monitor {
+        // padding: 0;
+    }
+
 }

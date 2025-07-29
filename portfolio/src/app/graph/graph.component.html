@@ -1,5 +1,5 @@
 <section #chartContainer class="chart">
-    <div #chart></div>
+    <h1>My Projects</h1>
     <div #chart class="chart-container"></div>
 
     <div [class.visible]="showNodeInfo && selectedNode" class="node-info-panel">
@@ -29,6 +29,82 @@
                                 <li>Event management</li>
                                 <li>User authentication</li>
                                 <li>Responsive design</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="selectedNode!.id.trim().toLowerCase() === 'portfolio'" class="node-content tickets">
+                    <p>
+                        In this project I used- oh wait... It's this website!
+                    </p>
+                    <p>
+                        Here is <a href="http://github.com/abtlb/Portfolio" target="_blank">GitHub</a> anyway
+                    </p>
+                                        <div class="tech-and-features">
+                        <div>
+                            <h3>Technolgies used:</h3>
+                            <ul>
+                                <li>Angular</li>
+                                <li>Typescript</li>
+                                <li>DS3.js</li>
+                                <li>SCSS</li>
+                                <li>HTML</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="selectedNode!.id.trim().toLowerCase() === 'iris'" class="node-content tickets">
+                    <h4 style="font-style: italic;">My graduation project and my most notable achievement</h4>
+                    <p>IRIS introduces 5 solutions to 5 problems that people with hearing/speech difficulties encounter daily</p>
+                    <div>
+                        <a href="https://www.canva.com/design/DAGsHMahygk/-_TARObFNUswTgDmMvxL7g/view?utm_content=DAGsHMahygk&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h7569556a9c" target="_blank">Full presentation</a> |
+                        <a href="https://github.com/abtlb/iris" target="_blank">GitHub</a>
+                    </div>
+                </div>
+                <div *ngIf="selectedNode!.id === 'Network Traffic Monitor'" class="node-content network-traffic-monitor">
+                    <a href="https://github.com/abtlb/Network-Traffic-Monitor" target="_blank">GitHub</a>
+                    <p>
+                        A C++ desktop hobby project I built in the summer of 2023
+                    </p>
+                    <div class="tech-and-features">
+                        <div>
+                            <h3>Technolgies used:</h3>
+                            <ul>
+                                <li>C++</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3>Features:</h3>
+                            <ul>
+                                <li>Real-time download/upload bandwidth</li>
+                                <li>Real-time display of the application that's using the most bandwidth</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="selectedNode!.id === 'Game Renderer'" class="node-content">
+                    <p>
+                        A game renderer built completely from ground-up using C++ and OpenGL
+                    </p>
+                    <a href="https://github.com/abtlb/UltraCoolGraphics" target="_blank">
+                        Github
+                    </a>
+                    <div class="tech-and-features">
+                        <div>
+                            <h3>Technolgies used:</h3>
+                            <ul>
+                                <li>C++</li>
+                                <li>OpenGL</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3>Features:</h3>
+                            <ul>
+                                <li>Texture support</li>
+                                <li>Lighting support</li>
+                                <li>Camera system</li>
+                                <li>Movement system</li>
+                                <li>Shader support</li>
                             </ul>
                         </div>
                     </div>

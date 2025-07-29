@@ -4,7 +4,8 @@
             "id": "IRIS ",
             "group": "Project",
             "radius": 70,
-            "img": "images/iris.png"
+            "img": "images/iris.png",
+            "fontSize": 20
         },
         {
             "id": "Tickets Wizard",
@@ -18,9 +19,10 @@
             "radius": 60
         },
         {
-            "id": "NTM",
+            "id": "Network Traffic Monitor",
             "group": "Project",
-            "radius": 60
+            "radius": 60,
+            "fontSize": 10
         },
         {
             "id": "Game Renderer",
@@ -55,7 +57,8 @@
         {
             "id": "Typescript",
             "group": "Skill",
-            "radius": 30
+            "radius": 30,
+            "fontSize": 10
         },
         {
             "id": "Flutter",
@@ -158,7 +161,7 @@
         },
 
         {
-            "source": "NTM",
+            "source": "Network Traffic Monitor",
             "target": "C++",
             "value": 5
         },
