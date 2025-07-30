@@ -18,13 +18,46 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   @ViewChild('gradient', { static: true, read: ElementRef }) gradient!: ElementRef;
   title = 'portfolio';
   platformId = inject(PLATFORM_ID);
+  private observer!: IntersectionObserver;
 
   ngAfterViewInit() {
     if (isPlatformBrowser(this.platformId)) {
       window.addEventListener('scroll', this.updateGradient);
+      this.setupIntersectionObserver();
     }
   }
 
+  private setupIntersectionObserver(): void {
+    this.observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          console.log('Element is visible:', entry.target);
+
+          // Check for trigger
+          if (entry.target.classList.contains("contact-bg-trigger")) {
+            console.log('Background trigger activated');
+            const main = document.querySelector('main');
+            main!.style.backgroundColor = 'rgba(200, 255, 0, 0.5)'; // Example color
+          }
+          else if (entry.target.classList.contains("popups-bg-trigger")) {
+            console.log('Background trigger activated');
+            const main = document.querySelector('main');
+            main!.style.backgroundColor = 'rgba(0, 145, 213, 0.81)'; // Example color
+          }
+
+        } else {
+          entry.target.classList.remove('visible');
+        }
+      });
+    });
+
+    // Use a small delay to ensure DOM is ready
+    setTimeout(() => {
+      const observables = document.querySelectorAll('.observable');
+      observables.forEach(observable => this.observer.observe(observable));
+    }, 1000);
+  }
 
   updateGradient = () => {
     if (isPlatformBrowser(this.platformId)) {

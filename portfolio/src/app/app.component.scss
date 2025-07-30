@@ -16,9 +16,10 @@ app-popups {
 
 main {
   --scroll-percent: 0%;
-  background: color-mix(in srgb,
-      #00ff00 calc(100% - var(--scroll-percent)),
-      #4242cc var(--scroll-percent));
+  transition: background-color 1s ease-in-out;
+  // background: color-mix(in srgb,
+  //     #00ff00 calc(100% - var(--scroll-percent)),
+  //     #4242cc var(--scroll-percent));
   padding: 0;
   width: 100%;
 }

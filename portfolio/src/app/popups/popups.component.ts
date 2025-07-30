@@ -7,8 +7,7 @@ import { isPlatformBrowser } from '@angular/common';
   templateUrl: './popups.component.html',
   styleUrl: './popups.component.scss'
 })
-export class PopupsComponent implements AfterViewInit, OnInit, OnDestroy {
-  private observer!: IntersectionObserver;
+export class PopupsComponent implements AfterViewInit, OnInit {
   private platformId = inject(PLATFORM_ID);
 
   ngOnInit(): void {
@@ -19,7 +18,6 @@ export class PopupsComponent implements AfterViewInit, OnInit, OnDestroy {
   ngAfterViewInit(): void {
     // Only run in browser environment
     if (isPlatformBrowser(this.platformId)) {
-      this.setupIntersectionObserver();
       this.generateRandomKeyframes();
     }
   }
@@ -59,30 +57,5 @@ export class PopupsComponent implements AfterViewInit, OnInit, OnDestroy {
 
       document.head.appendChild(style);
     }, 100);
-  }
-
-  private setupIntersectionObserver(): void {
-    this.observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        } else {
-          entry.target.classList.remove('visible');
-        }
-      });
-    });
-
-    // Use a small delay to ensure DOM is ready
-    setTimeout(() => {
-      const bubbles = document.querySelectorAll('.bubble');
-      bubbles.forEach(bubble => this.observer.observe(bubble));
-    }, 1000);
-  }
-
-  ngOnDestroy(): void {
-    // Clean up observer when component is destroyed
-    if (this.observer) {
-      this.observer.disconnect();
-    }
   }
 }
