@@ -18,7 +18,9 @@ export class PopupsComponent implements AfterViewInit, OnInit {
   ngAfterViewInit(): void {
     // Only run in browser environment
     if (isPlatformBrowser(this.platformId)) {
-      this.generateRandomKeyframes();
+      setTimeout(() => {
+        this.generateRandomKeyframes();
+      }, 100);
     }
   }
 

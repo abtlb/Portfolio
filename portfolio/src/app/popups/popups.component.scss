@@ -5,12 +5,20 @@ section {
   position: relative;
   width: 100%;
   height: 100vh;
+  background:
+  radial-gradient(black 15%, transparent 16%) 0 0,
+  radial-gradient(black 15%, transparent 16%) 8px 8px,
+  radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 0 1px,
+  radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 8px 9px;
+  background-color:transparent;
+  background-size:16px 16px;
+  z-index: 0;
 }
 
 .popups-bg-trigger {
   background-color: turquoise;
   position: absolute;
-  top: 5%;
+  top: 50%;
   left: 0;
   width: 100%;
   height: 1%;
@@ -28,26 +36,28 @@ section {
     align-items: center;
     justify-content: center;
     text-align: center;
-    background: radial-gradient(circle, #55b0ff 60%, rgba(240,248,255,0) 100%);
+    background: radial-gradient(circle, #0075db 0%, rgba(240,248,255,0)100%);
     scale: 0;
     transition: filter 0.7s ease, transform 2s ease, scale 1s ease;
     top: 70%;
-    text-shadow: #55b0ff 0px 0px 5px, #55b0ff 0px 0px 10px, #55b0ff 0px 0px 15px;
+    color: white;
     // font-weight: 600;
-
-
+    text-shadow: #55b0ff 0px 0px 40px, #55b0ff 0px 0px 80px, #55b0ff 0px 0px 60px;
+    
+    
     &.visible {
       scale: 1;
     }
-
+    
     &:hover:not(.no-hover) {
       scale: 1.2;
       filter: hue-rotate(0deg) saturate(1.5);
     }
-}
-
-.bubble:nth-child(2) {
-  // text-shadow: #55b0ff 0px 0px 10px, #55b0ff 0px 0px 20px, #55b0ff 0px 0px 30px;
+  }
+  
+  .bubble-main {
+    // text-shadow: #55b0ff 0px 0px 10px, #55b0ff 0px 0px 20px, #55b0ff 0px 0px 30px;
+    text-shadow: #55b0ff 0px 0px 10px, #55b0ff 0px 0px 20px, #55b0ff 0px 0px 30px;
   left: 50%;
   top: 20%;
   background: radial-gradient(circle, #003e75 60%, rgba(255, 255, 255, 0) 100%);
@@ -58,19 +68,19 @@ section {
   font-size: 4rem;
 }
 
-.bubble:nth-child(3) {
+.bubble-1 {
   left: 15vw;
 }
 
-.bubble:nth-child(4) {
+.bubble-2 {
   left: 38vw;
 }
 
-.bubble:nth-child(5) {
+.bubble-3 {
   left: 62vw;
 }
 
-.bubble:nth-child(6) {
+.bubble-4 {
   left: 85vw;
 }
 
@@ -80,29 +90,28 @@ section {
     width: 40vw;
     height: 40vw;
     border-radius: 40vw;
+  }
 
-    &:nth-child(1) {
+    bubble-main {
       width: 60vw;
       height: 60vw;
       border-radius: 60vw;
     }
 
-    &:nth-child(2) {
+    .bubble-1 {
       left: 27vw;
       top: 45%;
     }
-    &:nth-child(3) {
+    .bubble-2 {
       left: 75vw;
       top: 45%;
     }
-    &:nth-child(4) {
+    .bubble-3 {
       left: 27vw;
       top: 70%;
     }
-    &:nth-child(5) {
+    .bubble-4 {
       left: 75vw;
       top: 70%;
     }
-
-  }
 }

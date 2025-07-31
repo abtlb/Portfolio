@@ -32,18 +32,23 @@ export class AppComponent implements AfterViewInit, OnDestroy {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('visible');
-          console.log('Element is visible:', entry.target);
 
           // Check for trigger
           if (entry.target.classList.contains("contact-bg-trigger")) {
-            console.log('Background trigger activated');
             const main = document.querySelector('main');
-            main!.style.backgroundColor = 'rgba(200, 255, 0, 0.5)'; // Example color
+            main!.style.backgroundColor = 'rgba(200, 255, 0, 0.5)'; 
           }
           else if (entry.target.classList.contains("popups-bg-trigger")) {
-            console.log('Background trigger activated');
             const main = document.querySelector('main');
-            main!.style.backgroundColor = 'rgba(0, 145, 213, 0.81)'; // Example color
+            main!.style.backgroundColor = 'rgba(0, 47, 109, 1)'; 
+          }
+          else if (entry.target.classList.contains("landing-bg-trigger")) {
+            const main = document.querySelector('main');
+            main!.style.backgroundColor = '#3F75CB'; 
+          }
+          else if (entry.target.classList.contains("graph-bg-trigger")) {
+            const main = document.querySelector('main');
+            main!.style.backgroundColor = 'transparent';
           }
 
         } else {

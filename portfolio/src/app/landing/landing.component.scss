@@ -8,6 +8,16 @@ section {
     margin-top: 3vh;
 }
 
+.landing-bg-trigger {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 30%;
+    height: 5%;
+    background-color: red;
+    z-index: -1; // Ensure it stays behind other content
+}
+
 .photo {
     background-repeat: no-repeat;
     background-size: cover;
