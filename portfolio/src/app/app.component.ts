@@ -48,7 +48,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
           }
           else if (entry.target.classList.contains("graph-bg-trigger")) {
             const main = document.querySelector('main');
-            main!.style.backgroundColor = 'transparent';
+            main!.style.backgroundColor = '#274b87ff';
           }
 
         } else {

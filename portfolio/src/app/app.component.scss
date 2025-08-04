@@ -34,48 +34,123 @@ main {
 .side-bubbles-left {
   position: fixed;
   height: 100vh;
-  background-image: url('/images/bubbles.png');
-  background-size: contain;
-  width: clamp(200px, 25vw, 400px); // min, preferred, max
+  // Remove background-image and replace with CSS bubbles
+  background: 
+    radial-gradient(circle at 0% 0%, black 80px, transparent 26px),
+    radial-gradient(circle at 0% 10%, black 80px, transparent 26px),
+    radial-gradient(circle at 0% 20%, black 80px, transparent 26px),
+    radial-gradient(circle at 0% 30%, black 80px, transparent 26px),
+    radial-gradient(circle at 0% 40%, black 80px, transparent 26px),
+    radial-gradient(circle at 0% 50%, black 80px, transparent 26px),
+    radial-gradient(circle at 0% 60%, black 80px, transparent 26px),
+    radial-gradient(circle at 0% 70%, black 80px, transparent 26px),
+    radial-gradient(circle at 0% 80%, black 80px, transparent 26px),
+    radial-gradient(circle at 0% 90%, black 80px, transparent 26px),
+    radial-gradient(circle at 0% 100%, black 80px, transparent 26px);
+  background-size: 
+    100% 100vh;
+  background-repeat: repeat-y;
+  // background-position: 
+  //   0 0,
+  //   0 -5vh,
+  //   0 -10vh,
+  //   0 -15vh,
+  //   0 -20vh,
+  //   0 -25vh;
+  width: clamp(100px, 300px, 15vw);
   top: 0;
   left: 0;
   bottom: 0;
   pointer-events: none;
 
   // Initial position: off-screen to the left
-    transform: translateX(-100%);
+  transform: translateX(-100%);
   animation: slideInFromLeft 1.5s ease-out forwards;
 
-    // After animation, transition to scroll control
+  // After animation, transition to scroll control
   transition: transform 0.1s ease-out;
-  transition-delay: 1.8s; // Start after animation + delay completes
+  transition-delay: 1.8s;
 
-  img:nth-child(1) {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+  // Remove img styles since we're using CSS bubbles
+  // img:nth-child(1) {
+  //   width: 100%;
+  //   height: 100%;
+  //   object-fit: cover;
+  // }
 }
 
 .side-bubbles-right {
   position: fixed;
   height: 100vh;
-  width: clamp(200px, 25vw, 400px); // min, preferred, max
+  width: clamp(200px, 25vw, 400px);
   top: 0;
   right: 0;
   bottom: 0;
-  background-image: url('/images/bubbles.png');
-  background-size: contain;
+  // Same bubble pattern - centered and darker
+  background: 
+    radial-gradient(circle at 0% 0%, black 80px, transparent 26px),
+    radial-gradient(circle at 0% 10%, black 80px, transparent 26px),
+    radial-gradient(circle at 0% 20%, black 80px, transparent 26px),
+    radial-gradient(circle at 0% 30%, black 80px, transparent 26px),
+    radial-gradient(circle at 0% 40%, black 80px, transparent 26px),
+    radial-gradient(circle at 0% 50%, black 80px, transparent 26px),
+    radial-gradient(circle at 0% 60%, black 80px, transparent 26px),
+    radial-gradient(circle at 0% 70%, black 80px, transparent 26px),
+    radial-gradient(circle at 0% 80%, black 80px, transparent 26px),
+    radial-gradient(circle at 0% 90%, black 80px, transparent 26px),
+    radial-gradient(circle at 0% 100%, black 80px, transparent 26px);
+background-size: 
+    100% 100vh;
+  background-repeat: repeat-y;
+  // background-position: 
+  //   0 0,
+  //   0 -5vh,
+  //   0 -10vh,
+  //   0 -15vh,
+  //   0 -20vh,
+  //   0 -25vh;
   pointer-events: none;
 
   // Initial position: off-screen to the right
-  transform: scaleX(-1) translateX(-100%);
+  transform: translateX(100%);
   animation: slideInFromRight 1.5s ease-out 0.3s forwards;
 
-    // After animation, transition to scroll control
-  animation-delay: 0s;
+  // After animation, transition to scroll control
   transition: transform 0.1s ease-out;
-  transition-delay: 1.5s; // Start transition after animation completes
+  transition-delay: 1.5s;
+}
+
+@media screen and (max-width: 1200px) {
+  .side-bubbles-right {
+      background: 
+    radial-gradient(circle at -12% 0%, black 80px, transparent 26px),
+    radial-gradient(circle at -12% 10%, black 80px, transparent 26px),
+    radial-gradient(circle at -12% 20%, black 80px, transparent 26px),
+    radial-gradient(circle at -12% 30%, black 80px, transparent 26px),
+    radial-gradient(circle at -12% 40%, black 80px, transparent 26px),
+    radial-gradient(circle at -12% 50%, black 80px, transparent 26px),
+    radial-gradient(circle at -12% 60%, black 80px, transparent 26px),
+    radial-gradient(circle at -12% 70%, black 80px, transparent 26px),
+    radial-gradient(circle at -12% 80%, black 80px, transparent 26px),
+    radial-gradient(circle at -12% 90%, black 80px, transparent 26px),
+    radial-gradient(circle at -12% 100%, black 80px, transparent 26px);
+  }
+
+  .side-bubbles-left {
+    background: 
+      radial-gradient(circle at -25% 0%, black 80px, transparent 26px),
+      radial-gradient(circle at -25% 10%, black 80px, transparent 26px),
+      radial-gradient(circle at -25% 20%, black 80px, transparent 26px),
+      radial-gradient(circle at -25% 30%, black 80px, transparent 26px),
+      radial-gradient(circle at -25% 40%, black 80px, transparent 26px),
+      radial-gradient(circle at -25% 50%, black 80px, transparent 26px),
+      radial-gradient(circle at -25% 60%, black 80px, transparent 26px),
+      radial-gradient(circle at -25% 70%, black 80px, transparent 26px),
+      radial-gradient(circle at -25% 80%, black 80px, transparent 26px),
+      radial-gradient(circle at -25% 90%, black 80px, transparent 26px),
+      radial-gradient(circle at -25% 100%, black 80px, transparent 26px);
+    }
+  
 }
 
 // Animation for left side bubbles
