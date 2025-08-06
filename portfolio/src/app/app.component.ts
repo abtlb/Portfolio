@@ -1,16 +1,15 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild, inject, PLATFORM_ID } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild, inject, PLATFORM_ID, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { MyHeaderComponent } from './my-header/my-header.component';
 import { GraphComponent } from './graph/graph.component';
 import { LandingComponent } from './landing/landing.component';
 import { PopupsComponent } from './popups/popups.component';
 import { ContactMeComponent } from './contact-me/contact-me.component';
-import { TestComponent } from './test/test.component';
 import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, GraphComponent, MyHeaderComponent, LandingComponent, PopupsComponent, ContactMeComponent, TestComponent],
+  imports: [RouterOutlet, GraphComponent, MyHeaderComponent, LandingComponent, PopupsComponent, ContactMeComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -22,6 +21,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit() {
     if (isPlatformBrowser(this.platformId)) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       window.addEventListener('scroll', this.updateGradient);
       this.setupIntersectionObserver();
     }
@@ -36,7 +36,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
           // Check for trigger
           if (entry.target.classList.contains("contact-bg-trigger")) {
             const main = document.querySelector('main');
-            main!.style.backgroundColor = '#3F75CB'; 
+            main!.style.backgroundColor = '#083783ff'; 
           }
           else if (entry.target.classList.contains("popups-bg-trigger")) {
             const main = document.querySelector('main');

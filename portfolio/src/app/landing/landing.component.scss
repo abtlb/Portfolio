@@ -8,6 +8,14 @@ section {
     margin-top: 3vh;
 }
 
+h1 {
+    color: black;
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3rem); // Responsive font size
+    text-align: center;
+    font-weight: 100; // Make the text bold
+}
+
 .landing-bg-trigger {
     position: absolute;
     top: 50%;
@@ -74,6 +82,34 @@ section {
     }
 }
 
+.typewriter-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.typewriter {
+    overflow: hidden;
+    white-space: nowrap;
+    margin: 0;
+    letter-spacing: 0.1em;
+    width: 0;
+    line-height: 1.2;
+}
+
+.line1 {
+    animation: typing1 1.5s steps(10, end) forwards, blink-caret 0.75s step-end infinite;
+}
+
+.line2 {
+    animation: typing2 0.5s steps(100, end) 0.8s forwards, blink-caret 0.75s step-end infinite 1.8s;
+    border-right: none; /* Remove cursor from first line when second starts */
+}
+
+.line1.finished {
+    border-right: none;
+}
+
 @keyframes slideUp {
   from {
     opacity: 0;
@@ -83,4 +119,33 @@ section {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+@keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+}
+
+@keyframes typing1 {
+    to { width: 100% }
+}
+
+@keyframes typing2 {
+    to { width: 100% }
+}
+
+@keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: currentColor }
+}
+
+/* Remove cursor from first line when second animation starts */
+.line1 {
+    animation: typing1 0.5s steps(100, end) forwards, 
+               blink-caret 0.75s step-end infinite,
+               remove-cursor 0s 1.8s forwards;
+}
+
+@keyframes remove-cursor {
+    to { border-right: none; }
 }
