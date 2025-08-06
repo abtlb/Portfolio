@@ -17,9 +17,7 @@ app-popups {
 main {
   --scroll-percent: 0%;
   transition: background-color 1s ease-in-out, background-image 1s ease-in-out;
-  // background: color-mix(in srgb,
-  //     #00ff00 calc(100% - var(--scroll-percent)),
-  //     #4242cc var(--scroll-percent));
+  background-color: #3F75CB;
   padding: 0;
   width: 100%;
 }
@@ -173,7 +171,7 @@ background-size:
     opacity: 0;
   }
   100% {
-    transform: translateX(calc((clamp(30%, var(--scroll-percent), 50%) - 30%) * -5));
+    transform: translateX(calc((clamp(15%, var(--scroll-percent), 20%) - 15%) * -20));
     opacity: 1;
   }
 }
@@ -184,7 +182,7 @@ background-size:
     opacity: 0;
   }
   100% {
-    transform: scaleX(-1) translateX(calc((clamp(30%, var(--scroll-percent), 50%) - 30%) * -5));
+    transform: scaleX(-1) translateX(calc((clamp(15%, var(--scroll-percent), 20%) - 15%) * -20));
     opacity: 1;
   }
 }

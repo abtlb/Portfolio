@@ -86,8 +86,8 @@ export class GraphComponent implements OnDestroy {
     const calculateStrength = (width: number) => {
       const minWidth = 300;
       const maxWidth = 1200;
-      const minStrength = -700;
-      const maxStrength = -3000;
+      const minStrength = -1000;
+      const maxStrength = -1500;
 
       const strength = d3.scaleLinear()
         .domain([minWidth, maxWidth])
@@ -104,7 +104,9 @@ export class GraphComponent implements OnDestroy {
     .force("charge", d3.forceManyBody().strength(calculateStrength(width))) // Dynamic charge strength based on width
     .force("x", d3.forceX())
     .force("y", d3.forceY())
-    .force("collide", d3.forceCollide(d => (d.radius ?? 20) + 2)) // +2 for padding
+    .force("collide", d3.forceCollide(d => (d.radius ?? 20) + 2))
+    .alphaTarget(0.1) // Keep simulation "hot" - prevents it from cooling down
+    .alphaDecay(0.01); // Prevent alpha from decaying to 0;
     this.simulation = simulation;
     
     // Create the SVG container.

@@ -36,7 +36,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
           // Check for trigger
           if (entry.target.classList.contains("contact-bg-trigger")) {
             const main = document.querySelector('main');
-            main!.style.backgroundColor = 'rgba(200, 255, 0, 0.5)'; 
+            main!.style.backgroundColor = '#3F75CB'; 
           }
           else if (entry.target.classList.contains("popups-bg-trigger")) {
             const main = document.querySelector('main');

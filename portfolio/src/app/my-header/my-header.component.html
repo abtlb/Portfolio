@@ -1,10 +1,14 @@
 <header>
     <nav aria-label="Main navigation">
         <ul>
-            <li><a href="#home">Home</a></li>
+            <!-- <li><a href="#home">Home</a></li>
             <li><a href="#projects">Projects</a></li>
             <li><a href="#values">Values</a></li>
-            <li><a href="#contact-me">Contact me</a></li>
+            <li><a href="#contact-me">Contact me</a></li> -->
+            <li><a (click)="scrollTo('home')" href="#home">Home</a></li>
+            <li><a (click)="scrollTo('projects')" href="#projects">Projects</a></li>
+            <li><a (click)="scrollTo('values')" href="#values">Values</a></li>
+            <li><a (click)="scrollTo('contact-me')" href="#contact-me">Contact me</a></li>
         </ul>
     </nav>
 </header>

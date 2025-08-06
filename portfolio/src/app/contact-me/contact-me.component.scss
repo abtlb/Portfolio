@@ -1,5 +1,5 @@
 section {
-    height: 60vh;
+    height: 95vh;
     position: relative;
     background-color:transparent;
     background-image: linear-gradient(30deg, #445 12%, transparent 12.5%, transparent 87%, #445 87.5%, #445),
@@ -11,6 +11,12 @@ section {
     background-size:80px 140px;
     background-position: 0 0, 0 0, 40px 70px, 40px 70px, 0 0, 40px 70px;
     z-index: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    // flex-wrap: wrap;
 }
 
 .contact-bg-trigger {
@@ -20,75 +26,194 @@ section {
     width: 100%;
     height: 5%;
     // opacity: 0; 
-    background-color: yellow;
+    background-color: transparent;
 }
 
 .lets {
-    top: 20%;
-    left: 5%;
-    width: 300px;
-    height: 250px;
-    position: absolute;
-    background: linear-gradient(135deg, rgb(112, 152, 255) 0%, black 90%, rgb(191, 245, 43) 100%);
-    border-radius: 20%;
-}
-
-h1 {
-    text-align: center;
-    font-size: 4rem;
-    color: white;
-}
-
-.visible {
     
-}
-
-ul {
-    list-style-type: none;
-    padding: 0;
+    transition: width 0.5s ease-in-out, height 0.5s ease-in-out;
+    backdrop-filter: blur(4px) grayscale(0.5); // background blur for glass effect
+    // mask: 
+    // linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+// -webkit-mask:
+    // radial-gradient(ellipse at center, black 30%, white 70%, transparent 100%);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    overflow: visible;
+    // border-radius: 0px 50px 50px 0px;
+}
+
+.lets.visible {
+    width: 50%;
+}
+
+h1 {
+    text-align: center;
+    font-size: clamp(4rem, 8vw, 8rem);
+    font-weight: 900;
+    letter-spacing: 0.02em;
+    margin: 0;
+    padding: 1rem 2rem;
+    border-radius: 2rem;
+    
+    // Glass morphism effect
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px) saturate(1.5);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    
+    // Text gradient and animation
+    background-image: linear-gradient(
+        135deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.9) 50%,
+        transparent 100%
+    );
+    background-size: 200% 100%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    
+    // Smooth transitions
+    transition: 
+        color 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        box-shadow 0.6s ease,
+        background-position 1.2s ease;
+    
+    // Initial state
+    transform: translateY(20px) scale(0.95);
+    opacity: 0;
+
+    &.visible {
+        color: white;
+        transform: translateY(0) scale(1);
+        opacity: 1;
+        background-position: -100% 0;
+        box-shadow: 
+            0 12px 40px rgba(0, 0, 0, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        
+        // Subtle glow effect
+        text-shadow: 
+            0 0 20px rgba(255, 255, 255, 0.5),
+            0 0 40px rgba(255, 255, 255, 0.3);
+    }
+
+    // Hover effect for interactive feel
+    &:hover {
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: 
+            0 16px 48px rgba(0, 0, 0, 0.5),
+            inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    }
+}
+
+.contacts {
+    margin: 0;
+    backdrop-filter: blur(4px); // background blur for glass effect
+    overflow: hidden;
+    
+    ul{
+        height: 100%;
+        gap: 1rem;
+        padding: 0;
+        list-style-type: none;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        margin: 0;
+    }
 }
 
 li {
     font-size: 3rem;
-    overflow: hidden;
-
-}
-
-.contacts {
-    width: 100vw;       
-}
-
-.contact-container {
-    position: relative;
+    overflow: visible;
     width: 100%;
-    height: 10vh;
 }
 
 .contact {
-    position: absolute;
-    left: 60%;
-    top: 0;
+    font-size: clamp(2rem, 3vw, 2.5rem);
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     gap: 0.5rem;
-    color: black;
-    height: 100%;
-    width: 100%;
+    padding: 1rem;
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    // width: 100%;
+    height: auto;
+    border-radius: 1rem;
+    
+    // Glass morphism effect similar to h1
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(8px) saturate(1.3);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 
+        0 6px 24px rgba(0, 0, 0, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    
+    // Smooth transitions
+    transition: 
+        transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        box-shadow 0.4s ease,
+        background 0.3s ease,
+        border-color 0.3s ease,
+        opacity 1s ease 0.5s
+        ;
+    
+    // Initial state
+    transform: scale(0.98);
+    opacity: 0;
+    
+    // Entrance animation when visible
+    &.visible {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    // Hover effects
+    &:hover {
+        transform: translateY(-4px) scale(1.02);
+        background: rgba(255, 255, 255, 0.12);
+        border-color: rgba(255, 255, 255, 0.25);
+        box-shadow: 
+            0 12px 36px rgba(0, 0, 0, 0.35),
+            inset 0 1px 0 rgba(255, 255, 255, 0.25);
+        
+        // Add subtle glow on hover
+        text-shadow: 
+            0 0 15px rgba(255, 255, 255, 0.4),
+            0 0 25px rgba(255, 255, 255, 0.2);
+    }
+
+    // Active state
+    &:active {
+        transform: translateY(-2px) scale(1);
+        box-shadow: 
+            0 8px 20px rgba(0, 0, 0, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+
+    // Focus state for accessibility
+    &:focus {
+        outline: none;
+        border-color: rgba(255, 255, 255, 0.4);
+        box-shadow: 
+            0 0 0 2px rgba(255, 255, 255, 0.2),
+            0 6px 24px rgba(0, 0, 0, 0.25),
+            inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    }
 }
-// .contact {
-//     position: absolute;
-//     left: 0;
-//     top: 0;
-//     display: flex;
-//     flex-direction: row;
-//     align-items: center;
-//     gap: 0.5rem;
-//     color: black;
-//     height: 10vh;
-//     width: 10vw;
-// }
+
+@media screen and (max-width: 900px) {
+    section {
+        flex-direction: column;
+    }
+}
