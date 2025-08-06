@@ -86,8 +86,8 @@ export class GraphComponent implements OnDestroy {
     const calculateStrength = (width: number) => {
       const minWidth = 300;
       const maxWidth = 1200;
-      const minStrength = -1000;
-      const maxStrength = -1500;
+      const minStrength = -800;
+      const maxStrength = -1200;
 
       const strength = d3.scaleLinear()
         .domain([minWidth, maxWidth])
