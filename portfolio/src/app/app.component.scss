@@ -48,13 +48,6 @@ main {
   background-size: 
     100% 100vh;
   background-repeat: repeat-y;
-  // background-position: 
-  //   0 0,
-  //   0 -5vh,
-  //   0 -10vh,
-  //   0 -15vh,
-  //   0 -20vh,
-  //   0 -25vh;
   width: clamp(100px, 300px, 15vw);
   top: 0;
   left: 0;
@@ -68,13 +61,6 @@ main {
   // After animation, transition to scroll control
   transition: transform 0.1s ease-out;
   transition-delay: 1.8s;
-
-  // Remove img styles since we're using CSS bubbles
-  // img:nth-child(1) {
-  //   width: 100%;
-  //   height: 100%;
-  //   object-fit: cover;
-  // }
 }
 
 .side-bubbles-right {
@@ -171,7 +157,7 @@ background-size:
     opacity: 0;
   }
   100% {
-    transform: translateX(calc((clamp(15%, var(--scroll-percent), 20%) - 15%) * -20));
+    transform: translateX(calc((clamp(0%, var(--scroll-percent), 50%)) * -2));
     opacity: 1;
   }
 }
@@ -182,7 +168,7 @@ background-size:
     opacity: 0;
   }
   100% {
-    transform: scaleX(-1) translateX(calc((clamp(15%, var(--scroll-percent), 20%) - 15%) * -20));
+    transform: scaleX(-1) translateX(calc((clamp(0%, var(--scroll-percent), 50%)) * -2));
     opacity: 1;
   }
 }

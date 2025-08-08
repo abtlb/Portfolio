@@ -52,6 +52,9 @@ export class AppComponent implements AfterViewInit, OnDestroy {
           }
 
         } else {
+          if (entry.target.classList.contains("bubble")) {
+            return;
+          }
           entry.target.classList.remove('visible');
         }
       });
