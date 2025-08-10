@@ -9,7 +9,7 @@ section {
 }
 
 h1 {
-    color: black;
+    color: rgb(0, 0, 0);
     margin: 0;
     font-size: clamp(2rem, 5vw, 3rem); // Responsive font size
     text-align: center;
@@ -64,7 +64,7 @@ h1 {
     padding: 0 20px; // Add some padding for spacing
     font-size: clamp(1.5rem, 3vw + 1rem, 2rem); // Adjust font size as needed
     text-align: center;
-    color: #333; // Set a color for the text
+    color: #000000a1; // Set a color for the text
     display: flex;
     flex-direction: column;
     align-items: center;
